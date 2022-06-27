@@ -15,7 +15,7 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-    //Create
+    //Create//
     @PostMapping("/user/{userId}/category/{categoryId}/posts")
     public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto,
                                               @PathVariable Integer userId,
