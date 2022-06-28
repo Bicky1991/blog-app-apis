@@ -65,17 +65,17 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post getPostId(Integer postId) {
+    public Post getPostById(Integer postId) {
         return null;
     }
 
     @Override
-    public List<Post> getPostByCategory(Integer categoryId) {
+    public List<PostDto> getPostByCategory(Integer categoryId) {
         return null;
     }
 
     @Override
-    public List<Post> getPostByUser(Integer userId) {
+    public List<PostDto> getPostByUser(Integer userId) {
         return null;
     }
 

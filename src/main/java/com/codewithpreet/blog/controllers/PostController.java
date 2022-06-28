@@ -24,4 +24,5 @@ public class PostController {
         PostDto createPost=this.postService.createPost(postDto,userId,categoryId);
         return new ResponseEntity<PostDto>(createPost, HttpStatus.CREATED);
     }
+
 }
