@@ -3,6 +3,7 @@ package com.codewithpreet.blog.controllers;
 import com.codewithpreet.blog.entities.Post;
 import com.codewithpreet.blog.payloads.ApiResponse;
 import com.codewithpreet.blog.payloads.PostDto;
+import com.codewithpreet.blog.payloads.PostResponse;
 import com.codewithpreet.blog.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,13 +44,15 @@ public class PostController {
     }
     //Get All Posts
     @GetMapping("/posts")
-    public ResponseEntity<List<PostDto>> getAllPost(
-            @RequestParam(value = "pageNumber",defaultValue = "10",required = false) Integer pageNumber,
-            @RequestParam(value = "pazeSize",defaultValue = "1",required = false) Integer pazeSize
+    public ResponseEntity<PostResponse> getAllPost(
+            @RequestParam(value = "pageNumber",defaultValue = "0",required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize",defaultValue = "4",required = false) Integer pageSize,
+            @RequestParam(value="sortBy",defaultValue = "postId",required = false) String sortBy,
+            @RequestParam(value = "sortDir",defaultValue = "asc",required = false) String sortDir
     )
     {
-        List<PostDto> allPost=this.postService.getAllPost(pageNumber,pazeSize);
-        return new ResponseEntity<List<PostDto>>(allPost,HttpStatus.OK);
+        PostResponse postResponse=this.postService.getAllPost(pageNumber,pageSize,sortBy,sortDir);
+        return new ResponseEntity<PostResponse>(postResponse,HttpStatus.OK);
     }
     //Get Post Details By id
     @GetMapping("/posts/{postId}")
