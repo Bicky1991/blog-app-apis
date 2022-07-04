@@ -2,7 +2,9 @@ package com.codewithpreet.blog.controllers;
 
 import com.codewithpreet.blog.payloads.JwtAuthRequest;
 import com.codewithpreet.blog.payloads.JwtAuthResponse;
+import com.codewithpreet.blog.payloads.UserDto;
 import com.codewithpreet.blog.security.JwtTokenHelper;
+import com.codewithpreet.blog.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,9 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping("/login")
     public ResponseEntity<JwtAuthResponse> createToken(
             @RequestBody JwtAuthRequest request
@@ -54,4 +59,11 @@ public class AuthController {
         }
     }
 
+    //Register New User Api
+    @PostMapping("/register")
+    public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userDto)
+    {
+        UserDto registeredUser = this.userService.registerNewUser(userDto);
+        return new ResponseEntity<UserDto>(registeredUser,HttpStatus.CREATED);
+    }
 }
