@@ -1,12 +1,16 @@
 package com.codewithpreet.blog.services.impl;
 
+import com.codewithpreet.blog.config.AppConstants;
+import com.codewithpreet.blog.entities.Role;
 import com.codewithpreet.blog.entities.User;
 import com.codewithpreet.blog.exceptions.ResourceNotFoundException;
 import com.codewithpreet.blog.payloads.UserDto;
+import com.codewithpreet.blog.repositories.RoleRepo;
 import com.codewithpreet.blog.repositories.UserRepo;
 import com.codewithpreet.blog.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +24,26 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RoleRepo roleRepo;
+
+    @Override
+    public UserDto registerNewUser(UserDto userDto) {
+        User user=this.modelMapper.map(userDto,User.class);
+
+        //Encoded The Password
+        user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+
+        //Roles
+        Role role=this.roleRepo.findById(AppConstants.NORMAL_USER).get();
+        user.getRoles().add(role);
+       User newUser = this.userRepo.save(user);
+        return this.modelMapper.map(newUser,UserDto.class);
+    }
 
     @Override
     public UserDto createUser(UserDto userDto) {
